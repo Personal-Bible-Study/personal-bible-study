@@ -2,6 +2,7 @@
   "expo": {
     "name": "personal-bible-study",
     "slug": "personal-bible-study",
+    "scheme": "personal-bible-study",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -25,6 +24,13 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "74ec80ca-eb5c-4c49-9eb7-74419cb2d54f"
+      }
+    },
+    "owner": "daveg7lee",
+    "plugins": ["expo-router"]
   }
 }
