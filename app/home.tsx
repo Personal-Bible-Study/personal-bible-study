@@ -1,8 +1,10 @@
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import { FlatList, ScrollView } from "react-native";
+import { FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 const StyledContainer = styled.View`
   color: #1a1d21;
@@ -24,21 +26,16 @@ const StyledTitle = styled.Text`
 
 const StyledCard = styled.TouchableOpacity`
   width: 100%;
-  height: 170px;
   background-color: #d8dede;
   border-radius: 20px;
   justify-content: space-between;
-  padding: 18px;
-  margin-bottom: 2%;
+  padding: 24px 18px;
+  margin-bottom: 3%;
 `;
 
 const StyledCardBigTitle = styled.Text`
-  font-size: 42px;
-  font-weight: 900;
-`;
-
-const StyledCardSamllText = styled.Text`
-  color: #899493;
+  font-size: 28px;
+  font-weight: 700;
 `;
 
 const StyledCardCol = styled.View`
@@ -59,19 +56,23 @@ const AddBtn = styled.TouchableOpacity`
   right: 10%;
 `;
 
-const notesData = [
-  { id: 1, date: "2023-08-28", category: "요한복음" },
-  { id: 2, date: "2023-08-28", category: "요한복음" },
-  { id: 3, date: "2023-08-28", category: "요한복음" },
-  { id: 4, date: "2023-08-28", category: "요한복음" },
-  { id: 5, date: "2023-08-28", category: "요한복음" },
-  { id: 6, date: "2023-08-28", category: "요한복음" },
-  { id: 7, date: "2023-08-28", category: "요한복음" },
-  { id: 8, date: "2023-08-28", category: "요한복음" },
-  { id: 9, date: "2023-08-28", category: "요한복음" },
-];
-
 export default function Page() {
+  const [bibleCategories, setBibleCategories] = useState([]);
+
+  const getData = async () => {
+    try {
+      const data = await AsyncStorage.getItem("bibleCategories");
+      setBibleCategories(data ? JSON.parse(data) : []);
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useFocusEffect(() => {
+    getData();
+    // AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove);
+  });
+
   return (
     <StyledContainer>
       <StyledHeader>
@@ -79,26 +80,23 @@ export default function Page() {
       </StyledHeader>
 
       <FlatList
-        data={notesData}
+        data={bibleCategories}
         renderItem={({ item }) => (
           <StyledCard
             onPress={() =>
               router.push({
                 pathname: "/notes/[bible]",
-                params: { bible: `${item.category}` },
+                params: { bible: `${item}` },
               })
             }
           >
             <StyledCardCol>
-              <StyledCardSamllText>{item.date}</StyledCardSamllText>
+              <StyledCardBigTitle>{item}</StyledCardBigTitle>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={34}
                 color="black"
               />
-            </StyledCardCol>
-            <StyledCardCol>
-              <StyledCardBigTitle>{item.category}</StyledCardBigTitle>
             </StyledCardCol>
           </StyledCard>
         )}

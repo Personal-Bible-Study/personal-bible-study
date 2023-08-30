@@ -1,7 +1,10 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { INote } from "../../../types";
 
 const StyledContainer = styled.View`
   color: #1a1d21;
@@ -46,34 +49,50 @@ const StyledCardBigTitle = styled.Text`
   font-weight: 900;
 `;
 
-const notesData = [
-  { id: 1, date: "2023-08-28", category: "요한복음", verses: "1:1-10" },
-  { id: 2, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 3, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 4, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 5, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 6, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 7, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 8, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-  { id: 9, date: "2023-08-28", category: "요한복음", verses: "1:10-20" },
-];
-
 export default function Page() {
+  const { bible } = useLocalSearchParams();
+  const [notes, setNotes] = useState<INote[]>([]);
+
+  const getData = async () => {
+    try {
+      if (bible && typeof bible === "string") {
+        const data = await AsyncStorage.getItem(decodeURI(bible));
+        const parsedData = data ? JSON.parse(data) : [];
+        if (parsedData) {
+          const fullyParsedArray = parsedData.map((item: string) => {
+            return JSON.parse(item);
+          });
+          setNotes(fullyParsedArray);
+        } else {
+          setNotes([]);
+        }
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [bible]);
+
   return (
     <StyledContainer>
       <StyledHeader>
-        <StyledTitle>요한복음</StyledTitle>
+        <StyledTitle>
+          {bible && typeof bible === "string" ? decodeURI(bible) : ""}
+        </StyledTitle>
       </StyledHeader>
 
       <FlatList
-        data={notesData}
+        data={notes}
         renderItem={({ item }) => (
           <StyledCard
             onPress={() =>
               router.push({
                 pathname: "/notes/[bible]/[id]",
                 params: {
-                  bible: `${item.category}`,
+                  bible: `${item.bible}`,
                   id: `${item.id}`,
                 },
               })
