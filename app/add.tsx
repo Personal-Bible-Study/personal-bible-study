@@ -11,9 +11,7 @@ const StyledContainer = styled.View`
 export default function Page() {
   return (
     <StyledContainer>
-      <Link replace href="home">
-        Login page
-      </Link>
+      <Link href="home">Add Page</Link>
     </StyledContainer>
   );
 }
