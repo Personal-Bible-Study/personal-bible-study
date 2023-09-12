@@ -62,12 +62,13 @@ export default function Page() {
           const fullyParsedArray = parsedData.map((item: string) => {
             return JSON.parse(item);
           });
+          console.log(fullyParsedArray);
           setNotes(fullyParsedArray);
         } else {
-          setNotes([]);
         }
       }
     } catch (e) {
+      console.log(e);
       // error reading value
     }
   };

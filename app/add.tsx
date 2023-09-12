@@ -289,7 +289,7 @@ const StyledContainer = styled.View`
 `;
 
 const StyledInput = styled.TextInput`
-  height: 40px;
+  height: 45px;
   min-width: 100%;
   border-width: 1px;
   border-radius: 4px;
@@ -364,7 +364,7 @@ export default function Page() {
       await AsyncStorage.setItem(id, jsonValue);
       await AsyncStorage.setItem(bible, JSON.stringify(newBibleNotes));
 
-      router.push("home");
+      router.push("/");
     } catch (e) {
       console.log(e);
     }
@@ -380,6 +380,7 @@ export default function Page() {
           <StyledLabel>성경</StyledLabel>
           <RNPickerSelect
             items={bibles}
+            fixAndroidTouchableBug
             value={bible}
             onValueChange={(value: string) => setBible(value)}
             style={{
@@ -407,18 +408,13 @@ export default function Page() {
           />
 
           <StyledLabel>말씀 주소</StyledLabel>
-          <StyledInput
-            onChangeText={onChangeVerses}
-            value={verses}
-            placeholder="Ex) 13:12-17"
-          />
+          <StyledInput onChangeText={onChangeVerses} value={verses} />
 
           <StyledLabel>내용</StyledLabel>
           <StyledTextarea
             onChangeText={onChangeContent}
             value={content}
             multiline={true}
-            placeholder="Multiline"
             numberOfLines={5}
           />
           <StyledSubmitBtn onPress={onSubmit}>

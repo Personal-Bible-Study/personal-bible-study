@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import { INote } from "../../../types";
 
@@ -25,6 +26,13 @@ const StyledTitle = styled.Text`
 const StyledCategoryHeader = styled.View`
   padding-top: 5%;
   padding-bottom: 5%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+`;
+
+const StyledCategoryRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: 2px;
@@ -55,6 +63,42 @@ export default function Page() {
     }
   };
 
+  const onClickDelete = async () => {
+    if (!noteData) return;
+
+    const bibleData = await AsyncStorage.getItem(noteData?.bible || "");
+    const parsedBibleData = bibleData ? JSON.parse(bibleData) : null;
+    const fullyParsedArray = parsedBibleData.map((item: string) => {
+      return JSON.parse(item);
+    });
+    const filteredData = fullyParsedArray.filter(
+      (i: INote) => i.id !== noteData?.id
+    );
+    await AsyncStorage.removeItem(noteData?.id);
+    if (filteredData.length >= 1) {
+      await AsyncStorage.setItem(
+        decodeURI(typeof bible === "string" ? bible : ""),
+        JSON.stringify(
+          filteredData.map((item: string) => {
+            return JSON.stringify(item);
+          })
+        )
+      );
+    } else {
+      await AsyncStorage.removeItem(noteData.bible);
+      const data = await AsyncStorage.getItem("bibleCategories");
+      const bibleCategoriesData = data ? JSON.parse(data) : [];
+      const filteredCategoriesData = bibleCategoriesData.filter(
+        (i: string) => i !== noteData.bible
+      );
+      await AsyncStorage.setItem(
+        "bibleCategories",
+        JSON.stringify(filteredCategoriesData)
+      );
+    }
+    router.push("/");
+  };
+
   useEffect(() => {
     getData();
   }, [id]);
@@ -62,11 +106,33 @@ export default function Page() {
   return (
     <StyledContainer>
       <StyledCategoryHeader>
-        <StyledCategoryText>
-          {decodeURI(typeof bible === "string" ? bible : "")}
-        </StyledCategoryText>
-        <StyledCategoryText> - </StyledCategoryText>
-        <StyledCategoryText>{noteData?.date}</StyledCategoryText>
+        <StyledCategoryRow>
+          <StyledCategoryText>
+            {decodeURI(typeof bible === "string" ? bible : "")}
+          </StyledCategoryText>
+          <StyledCategoryText> - </StyledCategoryText>
+          <StyledCategoryText>{noteData?.date}</StyledCategoryText>
+        </StyledCategoryRow>
+        <StyledCategoryRow>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                "정말로 삭제하시겠어요?",
+                "한 번 삭제한 노트는 다시 되돌릴 수 없어요.",
+                [
+                  {
+                    text: "아니요",
+                    style: "cancel",
+                  },
+                  { text: "네", onPress: onClickDelete },
+                ],
+                { cancelable: false }
+              )
+            }
+          >
+            <AntDesign name="delete" size={24} color="black" />
+          </TouchableOpacity>
+        </StyledCategoryRow>
       </StyledCategoryHeader>
       <StyledHeader>
         <StyledTitle>{noteData?.verses}</StyledTitle>
