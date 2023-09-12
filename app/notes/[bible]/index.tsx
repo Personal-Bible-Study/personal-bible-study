@@ -62,7 +62,6 @@ export default function Page() {
           const fullyParsedArray = parsedData.map((item: string) => {
             return JSON.parse(item);
           });
-          console.log(fullyParsedArray);
           setNotes(fullyParsedArray);
         } else {
         }
