@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
+import Picker from "@ouroboros/react-native-picker";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,267 +14,267 @@ import { router } from "expo-router";
 
 const bibles = [
   {
-    label: "창세기",
+    text: "창세기",
     value: "창세기",
   },
   {
-    label: "출애굽기",
+    text: "출애굽기",
     value: "출애굽기",
   },
   {
-    label: "레위기",
+    text: "레위기",
     value: "레위기",
   },
   {
-    label: "민수기",
+    text: "민수기",
     value: "민수기",
   },
   {
-    label: "신명기",
+    text: "신명기",
     value: "신명기",
   },
   {
-    label: "여호수아",
+    text: "여호수아",
     value: "여호수아",
   },
   {
-    label: "사사기",
+    text: "사사기",
     value: "사사기",
   },
   {
-    label: "룻기",
+    text: "룻기",
     value: "룻기",
   },
   {
-    label: "사무엘상",
+    text: "사무엘상",
     value: "사무엘상",
   },
   {
-    label: "사무엘하",
+    text: "사무엘하",
     value: "사무엘하",
   },
   {
-    label: "열왕기상",
+    text: "열왕기상",
     value: "열왕기상",
   },
   {
-    label: "열왕기하",
+    text: "열왕기하",
     value: "열왕기하",
   },
   {
-    label: "역대상",
+    text: "역대상",
     value: "역대상",
   },
   {
-    label: "역대하",
+    text: "역대하",
     value: "역대하",
   },
   {
-    label: "에스라",
+    text: "에스라",
     value: "에스라",
   },
   {
-    label: "느헤미야",
+    text: "느헤미야",
     value: "느헤미야",
   },
   {
-    label: "에스더",
+    text: "에스더",
     value: "에스더",
   },
   {
-    label: "욥기",
+    text: "욥기",
     value: "욥기",
   },
   {
-    label: "시편",
+    text: "시편",
     value: "시편",
   },
   {
-    label: "잠언",
+    text: "잠언",
     value: "잠언",
   },
   {
-    label: "전도서",
+    text: "전도서",
     value: "전도서",
   },
   {
-    label: "아가",
+    text: "아가",
     value: "아가",
   },
   {
-    label: "이사야",
+    text: "이사야",
     value: "이사야",
   },
   {
-    label: "예레미야",
+    text: "예레미야",
     value: "예레미야",
   },
   {
-    label: "예레미야애가",
+    text: "예레미야애가",
     value: "예레미야애가",
   },
   {
-    label: "에스겔",
+    text: "에스겔",
     value: "에스겔",
   },
   {
-    label: "다니엘",
+    text: "다니엘",
     value: "다니엘",
   },
   {
-    label: "호세아",
+    text: "호세아",
     value: "호세아",
   },
   {
-    label: "요엘",
+    text: "요엘",
     value: "요엘",
   },
   {
-    label: "아모스",
+    text: "아모스",
     value: "아모스",
   },
   {
-    label: "오바댜",
+    text: "오바댜",
     value: "오바댜",
   },
   {
-    label: "요나",
+    text: "요나",
     value: "요나",
   },
   {
-    label: "미가",
+    text: "미가",
     value: "미가",
   },
   {
-    label: "나훔",
+    text: "나훔",
     value: "나훔",
   },
   {
-    label: "하박국",
+    text: "하박국",
     value: "하박국",
   },
   {
-    label: "스바냐",
+    text: "스바냐",
     value: "스바냐",
   },
   {
-    label: "학개",
+    text: "학개",
     value: "학개",
   },
   {
-    label: "스가랴",
+    text: "스가랴",
     value: "스가랴",
   },
   {
-    label: "말라기",
+    text: "말라기",
     value: "말라기",
   },
   {
-    label: "마태복음",
+    text: "마태복음",
     value: "마태복음",
   },
   {
-    label: "마가복음",
+    text: "마가복음",
     value: "마가복음",
   },
   {
-    label: "누가복음",
+    text: "누가복음",
     value: "누가복음",
   },
   {
-    label: "요한복음",
+    text: "요한복음",
     value: "요한복음",
   },
   {
-    label: "사도행전",
+    text: "사도행전",
     value: "사도행전",
   },
   {
-    label: "로마서",
+    text: "로마서",
     value: "로마서",
   },
   {
-    label: "고린도전서",
+    text: "고린도전서",
     value: "고린도전서",
   },
   {
-    label: "고린도후서",
+    text: "고린도후서",
     value: "고린도후서",
   },
   {
-    label: "갈라디아서",
+    text: "갈라디아서",
     value: "갈라디아서",
   },
   {
-    label: "에베소서",
+    text: "에베소서",
     value: "에베소서",
   },
   {
-    label: "빌립보서",
+    text: "빌립보서",
     value: "빌립보서",
   },
   {
-    label: "골로새서",
+    text: "골로새서",
     value: "골로새서",
   },
   {
-    label: "데살로니가전서",
+    text: "데살로니가전서",
     value: "데살로니가전서",
   },
   {
-    label: "데살로니가후서",
+    text: "데살로니가후서",
     value: "데살로니가후서",
   },
   {
-    label: "디모데전서",
+    text: "디모데전서",
     value: "디모데전서",
   },
   {
-    label: "디모데후서",
+    text: "디모데후서",
     value: "디모데후서",
   },
   {
-    label: "디도서",
+    text: "디도서",
     value: "디도서",
   },
   {
-    label: "빌레몬서",
+    text: "빌레몬서",
     value: "빌레몬서",
   },
   {
-    label: "히브리서",
+    text: "히브리서",
     value: "히브리서",
   },
   {
-    label: "야고보서",
+    text: "야고보서",
     value: "야고보서",
   },
   {
-    label: "베드로전서",
+    text: "베드로전서",
     value: "베드로전서",
   },
   {
-    label: "베드로후서",
+    text: "베드로후서",
     value: "베드로후서",
   },
   {
-    label: "요한일서",
+    text: "요한일서",
     value: "요한일서",
   },
   {
-    label: "요한이서",
+    text: "요한이서",
     value: "요한이서",
   },
   {
-    label: "요한삼서",
+    text: "요한삼서",
     value: "요한삼서",
   },
   {
-    label: "유다서",
+    text: "유다서",
     value: "유다서",
   },
   {
-    label: "요한계시록",
+    text: "요한계시록",
     value: "요한계시록",
   },
 ];
@@ -327,7 +327,7 @@ const StyledSubmitBtn = styled.TouchableOpacity`
 `;
 
 export default function Page() {
-  const [bible, setBible] = useState("");
+  const [bible, setBible] = useState("창세기");
   const [verses, onChangeVerses] = useState("");
   const [content, onChangeContent] = useState("");
 
@@ -378,32 +378,19 @@ export default function Page() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <StyledContainer>
           <StyledLabel>성경</StyledLabel>
-          <RNPickerSelect
-            items={bibles}
-            fixAndroidTouchableBug
+          <Picker
+            onChanged={setBible}
+            options={bibles}
             value={bible}
-            onValueChange={(value: string) => setBible(value)}
             style={{
-              inputIOS: {
-                height: 40,
-                width: "100%",
-                borderWidth: 1,
-                borderRadius: 4,
-                padding: 12,
-                fontSize: 18,
-                marginBottom: 14,
-                borderColor: "#C0C5C5",
-              },
-              inputAndroid: {
-                height: 40,
-                width: "100%",
-                borderWidth: 1,
-                borderRadius: 4,
-                padding: 12,
-                fontSize: 18,
-                marginBottom: 14,
-                borderColor: "#C0C5C5",
-              },
+              height: 45,
+              minWidth: "100%",
+              borderWidth: 1,
+              borderRadius: 4,
+              padding: 12,
+              fontSize: 18,
+              marginBottom: 14,
+              borderColor: "#c0c5c5",
             }}
           />
 
