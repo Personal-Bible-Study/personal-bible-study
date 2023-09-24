@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 import { FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
+import ProtectedRoute from "../components/protedted-route";
 
 const StyledContainer = styled.View`
   color: #1a1d21;
@@ -74,41 +75,43 @@ export default function Page() {
   });
 
   return (
-    <StyledContainer>
-      <StyledHeader>
-        <StyledTitle>목록</StyledTitle>
-      </StyledHeader>
+    <ProtectedRoute>
+      <StyledContainer>
+        <StyledHeader>
+          <StyledTitle>목록</StyledTitle>
+        </StyledHeader>
 
-      <FlatList
-        data={bibleCategories}
-        renderItem={({ item }) => (
-          <StyledCard
-            onPress={() =>
-              router.push({
-                pathname: "/notes/[bible]",
-                params: { bible: `${item}` },
-              })
-            }
-          >
-            <StyledCardCol>
-              <StyledCardBigTitle>{item}</StyledCardBigTitle>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={34}
-                color="black"
-              />
-            </StyledCardCol>
-          </StyledCard>
-        )}
-      />
+        <FlatList
+          data={bibleCategories}
+          renderItem={({ item }) => (
+            <StyledCard
+              onPress={() =>
+                router.push({
+                  pathname: "/notes/[bible]",
+                  params: { bible: `${item}` },
+                })
+              }
+            >
+              <StyledCardCol>
+                <StyledCardBigTitle>{item}</StyledCardBigTitle>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={34}
+                  color="black"
+                />
+              </StyledCardCol>
+            </StyledCard>
+          )}
+        />
 
-      <AddBtn
-        onPress={() => {
-          router.push("add");
-        }}
-      >
-        <AntDesign name="plus" size={24} color="white" />
-      </AddBtn>
-    </StyledContainer>
+        <AddBtn
+          onPress={() => {
+            router.push("add");
+          }}
+        >
+          <AntDesign name="plus" size={24} color="white" />
+        </AddBtn>
+      </StyledContainer>
+    </ProtectedRoute>
   );
 }
